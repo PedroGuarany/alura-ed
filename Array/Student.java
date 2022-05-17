@@ -1,4 +1,4 @@
-package class1;
+package Array;
 
 import java.util.Objects;
 

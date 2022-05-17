@@ -1,4 +1,4 @@
-package class1;
+package Array;
 
 import java.util.Arrays;
 
@@ -69,7 +69,7 @@ public class MyArray {
         return false;
     }
 
-    public int size(){
+    public int length(){
         return totalStudents;
     }
 
