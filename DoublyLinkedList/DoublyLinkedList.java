@@ -1,17 +1,23 @@
-package LinkedList;
+package DoublyLinkedList;
 
-public class LinkedList {
+public class DoublyLinkedList {
 
     private Cell firstElement = null;
     private Cell lastElement = null;
     private int totalElements = 0;
 
     public void addAtStart(Object element){
-        Cell newCell = new Cell(element, firstElement);
-        firstElement = newCell;
+        if(totalElements == 0){
+            Cell newCell = new Cell(element, null, null);
+            this.firstElement = newCell;
+            this.lastElement = newCell;
+        }
+        else{
+            Cell newCell = new Cell(element, null, this.firstElement);
+            this.firstElement.setPrevious(newCell);
+            this.firstElement = newCell;
+        }
 
-        if(totalElements == 0)
-            lastElement = newCell;
         this.totalElements++;
     }
 
@@ -20,12 +26,11 @@ public class LinkedList {
             addAtStart(element);
         }
         else{
-            Cell newCell = new Cell(element, null);
+           Cell newCell = new Cell(element, this.lastElement, null);
+           this.lastElement.setNext(newCell);
+           this.lastElement = newCell;
 
-            lastElement.setNext(newCell);
-            lastElement = newCell;
-
-            this.totalElements++;
+           this.totalElements++;
         }
     }
 
@@ -39,9 +44,10 @@ public class LinkedList {
             add(element);
         else{
             Cell previousCell = getCell(index - 1);
-            Cell newCell = new Cell(element, previousCell.getNext());
-            previousCell.setNext(newCell);
+            Cell newCell = new Cell(element, previousCell, previousCell.getNext());
 
+            newCell.getPrevious().setNext(newCell);
+            newCell.getNext().setPrevious(newCell);
             this.totalElements++;
         }
     }
@@ -74,27 +80,38 @@ public class LinkedList {
             throw new IllegalArgumentException("Empty list");
 
         this.firstElement = this.firstElement.getNext();
+        this.firstElement.setPrevious(null);
         this.totalElements--;
 
         if(totalElements == 0)
             this.lastElement = null;
     }
 
-    public void removeFrom(int index){
-        if(index == 0){
+    public void removeFromEnd(){
+        if(this.totalElements == 1){
             removeFromStart();
         }
         else{
-            if(this.totalElements == 0)
-                throw new IllegalArgumentException("Empty list");
+            this.lastElement = this.lastElement.getPrevious();
+            this.lastElement.setNext(null);
+
+            this.totalElements--;
+        }
+    }
+    public void removeFrom(int index){
+        if(index == 0)
+            removeFromStart();
+        else if (index == totalElements - 1)
+            removeFromEnd();
+        else{
             if(!indexExists(index))
                 throw new IllegalArgumentException("Invalid index");
 
             Cell previousCell = getCell(index - 1);
-            Cell currentCell = getCell(index);
-            previousCell.setNext(currentCell.getNext());
-            if(index == totalElements - 1)
-                lastElement = previousCell;
+            Cell currentCell = previousCell.getNext();
+            Cell nextCell = currentCell.getNext();
+            previousCell.setNext(nextCell);
+            nextCell.setPrevious(previousCell);
 
             this.totalElements--;
             if(totalElements == 0){
@@ -119,5 +136,18 @@ public class LinkedList {
         builder.delete(builder.length() - 2, builder.length());
         builder.append("]");
         return builder.toString();
+    }
+
+    public boolean contains(Object element){
+        Cell currentCell = this.firstElement;
+
+        while(currentCell != null){
+            if(currentCell.getElement().equals(element))
+                return true;
+
+            currentCell = currentCell.getNext();
+        }
+
+        return false;
     }
 }

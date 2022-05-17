@@ -1,9 +1,9 @@
-package LinkedList;
+package DoublyLinkedList;
 
-public class LinkedListTest {
+public class DoublyLinkedListTest {
     public static void main(String[] args) {
 
-        LinkedList list = new LinkedList();
+        DoublyLinkedList list = new DoublyLinkedList();
 
         list.add("Joao");
         list.add("Pedro");
@@ -22,14 +22,21 @@ public class LinkedListTest {
         list.removeFromStart();
         System.out.println(list);
 
-        list.removeFrom(1);
-        list.removeFrom(2);
-        System.out.println(list);
-
         list.add("Python");
         list.add("Clojure");
+        System.out.println(list);
+        list.removeFrom(1);
+        System.out.println(list);
+
+        list.removeFromEnd();
+        System.out.println(list);
 
         list.removeFrom(1);
         System.out.println(list);
+        list.removeFrom(0);
+        System.out.println(list);
+
+        System.out.println(list.contains("Python"));
+        System.out.println(list.contains("Teste"));
     }
 }
