@@ -30,7 +30,7 @@ public class Set {
             list.remove(text);
         }
     }
- 
+
     private boolean contains(String text){
         int index = getTableIndex(text);
         return table.get(index).contains(text);
